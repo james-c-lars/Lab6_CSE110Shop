@@ -2,6 +2,9 @@
 window.addEventListener('DOMContentLoaded', () => {
   	if('products' in localStorage) {
 		addProductsToPage();
+		if(!('cart' in localStorage)) {
+			createCart();
+		}
 	} else {
 		fetch('https://fakestoreapi.com/products')
 			.then(response => response.json())
