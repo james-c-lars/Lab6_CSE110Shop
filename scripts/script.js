@@ -5,21 +5,9 @@ window.addEventListener('DOMContentLoaded', () => {
 	} else {
 		fetch('https://fakestoreapi.com/products')
 			.then(response => response.json())
-			.then(data => {
-				localStorage.setItem('products', JSON.stringify(data));
-				addProductsToPage();
-			});
-	}
-
-	if(!('cart' in localStorage)) {
-		let products = JSON.parse(localStorage.getItem('products'));
-		cart = {};
-
-		for(product of products) {
-			cart[product['id']] = false;
-		}
-
-		localStorage.setItem('cart', JSON.stringify(cart));
+			.then(data => localStorage.setItem('products', JSON.stringify(data)))
+			.then(createCart)
+			.then(addProductsToPage);
 	}
 });
 
@@ -31,4 +19,15 @@ function addProductsToPage() {
 	for(product of products) {
 		productList.appendChild(new ProductItem(product));
 	}
+}
+
+function createCart() {
+	let products = JSON.parse(localStorage.getItem('products'));
+	cart = {};
+
+	for(product of products) {
+		cart[product['id']] = false;
+	}
+
+	localStorage.setItem('cart', JSON.stringify(cart));
 }
